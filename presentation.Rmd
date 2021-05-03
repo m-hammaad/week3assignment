@@ -1,0 +1,49 @@
+---
+title: "Week 3 Assignment"
+knit: (function(input_file, encoding) {
+  out_dir <- 'docs';
+  rmarkdown::render(input_file,
+ encoding=encoding,
+ output_file=file.path(dirname(input_file), out_dir, 'index.html'))})
+author: "Hammad Hussain"
+date: "5/3/2021"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+```{r data, include=FALSE}
+library(readxl)
+library(dplyr)
+library(data.table)
+library(plotly)
+library(ggplot2)
+```
+
+## Population of foreign nationals in Germany over the years (2005-2019)
+
+```{r plot}
+
+data <- read_excel('data.xlsx', sheet = 2) %>% data.frame()
+ plot <- ggplot(data, aes(x = year, y= Population, group =1)) +       geom_line(size=1.5) +
+        theme_bw() +
+        theme(axis.line = element_line(colour = "black"),
+              panel.grid.major.x = element_blank(),
+              panel.grid.minor.x = element_blank(),
+              panel.grid.minor.y = element_blank(),
+              panel.border = element_blank(),
+              panel.background = element_blank(),
+              axis.text.x = element_text(angle = 90),
+              axis.line.y = element_blank(),
+              axis.ticks.y = element_blank(),
+              axis.text = element_text(size = 16, color = "black"),
+              axis.title.y = element_text(vjust = 4),
+              axis.title = element_text(face = "bold", size = 16)) +
+        scale_y_continuous(labels=function(x) format(x, big.mark = ",", decimal.mark = ".", scientific = FALSE),
+                           breaks=scales::pretty_breaks(n=6)) +
+        ylab('Population') + xlab('Year')
+ggplotly(plot) 
+```
+
+## Thanks
